@@ -1,0 +1,43 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--color-danger);
+  border-radius: var(--radius);
+  background: var(--color-danger-soft);
+}
+
+.icon {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.body {
+  flex: 1;
+}
+
+.title {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.message {
+  margin-top: 0.15rem;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+.retry {
+  padding: 0.5rem 0.9rem;
+  border: 1px solid var(--color-danger);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-danger);
+  font-weight: 500;
+  transition: background var(--transition);
+}
+
+.retry:hover {
+  background: var(--color-danger-soft);
+}

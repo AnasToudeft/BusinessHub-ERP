@@ -1,27 +1,43 @@
+// Express application factory: wires middleware, routes and error handling.
+// No server binding here (see server.js) so the app stays easy to test.
+
 import express from "express";
 import cors from "cors";
+import helmet from "helmet";
 
-import healthRoutes from "./routes/health.routes.js";
+import config from "./config/env.js";
+import apiRoutes from "./routes/index.js";
+import requestLogger from "./middleware/requestLogger.js";
+import notFound from "./middleware/notFound.js";
+import errorHandler from "./middleware/errorHandler.js";
 
-// Create and configure the Express application.
 const app = express();
 
-// Core middleware
-app.use(cors());
+// Security middleware
+app.use(helmet());
+app.use(cors({ origin: config.corsOrigin }));
+
+// Body parsing
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// API routes
-app.use("/api", healthRoutes);
+// Request logging
+app.use(requestLogger);
 
-// Root endpoint
+// API routes (mounted under /api)
+app.use("/api", apiRoutes);
+
+// Service identity at the root
 app.get("/", (req, res) => {
-  res.json({ service: "businesshub-server", message: "BusinessHub ERP API" });
+  res.json({
+    service: "businesshub-server",
+    message: "BusinessHub ERP API",
+    health: "/api/health",
+  });
 });
 
-// 404 handler
-app.use((req, res) => {
-  res.status(404).json({ error: "Not Found" });
-});
+// Centralized 404 + error handling — must remain the last middleware.
+app.use(notFound);
+app.use(errorHandler);
 
 export default app;

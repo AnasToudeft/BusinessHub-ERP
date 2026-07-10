@@ -8,6 +8,30 @@
 http://localhost:5000/api
 ```
 
+## Response Format
+
+Every response uses a consistent envelope.
+
+**Success**
+```json
+{
+  "success": true,
+  "message": "OK",
+  "data": {  },
+  "timestamp": "2026-01-01T00:00:00.000Z"
+}
+```
+
+**Error**
+```json
+{
+  "success": false,
+  "message": "Not Found",
+  "error": { "statusCode": 404, "details": null },
+  "timestamp": "2026-01-01T00:00:00.000Z"
+}
+```
+
 ## Endpoints
 
 ### Health
@@ -19,8 +43,14 @@ http://localhost:5000/api
 **Example response**
 ```json
 {
-  "status": "ok",
-  "service": "businesshub-server",
+  "success": true,
+  "message": "Service is healthy",
+  "data": {
+    "service": "businesshub-server",
+    "status": "ok",
+    "environment": "development",
+    "uptimeSeconds": 12.34
+  },
   "timestamp": "2026-01-01T00:00:00.000Z"
 }
 ```

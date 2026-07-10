@@ -1,14 +1,12 @@
+// Health routes. Mounted at /api/health by the router aggregator.
+
 import { Router } from "express";
+
+import { getHealth } from "../controllers/health.controller.js";
 
 const router = Router();
 
-// GET /api/health - simple liveness check
-router.get("/health", (req, res) => {
-  res.json({
-    status: "ok",
-    service: "businesshub-server",
-    timestamp: new Date().toISOString(),
-  });
-});
+// GET /api/health
+router.get("/", getHealth);
 
 export default router;

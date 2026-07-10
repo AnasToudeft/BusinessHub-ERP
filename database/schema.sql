@@ -1,0 +1,15 @@
+-- =========================================================
+-- BusinessHub ERP - Database Schema (placeholder)
+-- Engine: Microsoft SQL Server
+--
+-- Table definitions will be added here as modules are built.
+-- No schema is implemented yet.
+-- =========================================================
+
+-- Example (to be defined later):
+-- CREATE TABLE Users (
+--     Id            INT IDENTITY(1,1) PRIMARY KEY,
+--     Email         NVARCHAR(255) NOT NULL UNIQUE,
+--     PasswordHash  NVARCHAR(255) NOT NULL,
+--     CreatedAt     DATETIME2     NOT NULL DEFAULT SYSUTCDATETIME()
+-- );

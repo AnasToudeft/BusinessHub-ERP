@@ -1,0 +1,52 @@
+# ---------------------------------------------------------
+# BusinessHub ERP - Docker Compose (placeholder)
+#
+# This is a starting-point orchestration file for the three
+# core services. Dockerfiles are NOT implemented yet; this
+# file documents the intended topology for local development.
+# ---------------------------------------------------------
+version: "3.9"
+
+services:
+  # ----- React frontend (Vite) -----
+  frontend:
+    build:
+      context: ./businesshub-client
+    container_name: businesshub-frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    # command: npm run dev
+    # volumes:
+    #   - ./businesshub-client:/app
+
+  # ----- Node.js / Express backend -----
+  backend:
+    build:
+      context: ./businesshub-server
+    container_name: businesshub-backend
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+    depends_on:
+      - database
+    # command: npm run dev
+    # volumes:
+    #   - ./businesshub-server:/app
+
+  # ----- Microsoft SQL Server -----
+  database:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: businesshub-db
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "${DB_PASSWORD}"
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql_data:/var/opt/mssql
+
+volumes:
+  mssql_data:

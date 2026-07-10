@@ -1,0 +1,11 @@
+-- =========================================================
+-- BusinessHub ERP - Seed Data (placeholder)
+-- Engine: Microsoft SQL Server
+--
+-- Initial and sample data will be added here once the
+-- schema is defined. No seed data is implemented yet.
+-- =========================================================
+
+-- Example (to be defined later):
+-- INSERT INTO Users (Email, PasswordHash)
+-- VALUES ('admin@businesshub.local', '<hashed_password>');

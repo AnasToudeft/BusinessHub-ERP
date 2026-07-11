@@ -18,11 +18,14 @@ cp ../.env.example .env
 
 ## Running
 ```bash
-npm run dev     # development (nodemon, auto-reload)
-npm start       # production
+npm run dev        # development (nodemon, auto-reload)
+npm start          # production
+npm run db:migrate # apply pending SQL migrations
 ```
 
-The server runs on `http://localhost:5000` by default.
+The server runs on `http://localhost:5000` by default. It starts even if SQL
+Server is unavailable (the DB connection is attempted but non-fatal); check
+database readiness at `/api/health/db`.
 
 ## Environment
 Configuration is read and validated once at startup by `src/config/env.js`.
@@ -57,10 +60,20 @@ Error:
 ```
 
 ## Endpoints
-| Method | Endpoint      | Description        |
-| ------ | ------------- | ------------------ |
-| GET    | `/`           | API root info      |
-| GET    | `/api/health` | Health check       |
+| Method | Endpoint         | Description                          |
+| ------ | ---------------- | ------------------------------------ |
+| GET    | `/`              | API root info                        |
+| GET    | `/api/health`    | Liveness check                       |
+| GET    | `/api/health/db` | Database readiness (200 / 503)       |
+
+## Database
+SQL Server connectivity lives in `src/database/`:
+- `pool.js` — shared `mssql` connection pool (`connectDatabase`, `getPool`,
+  `checkDatabaseConnection`, `closeDatabase`).
+- `migrate.js` — migration runner (`npm run db:migrate`).
+
+See [`docs/database.md`](../docs/database.md) for connection settings, schema
+conventions, migrations, and running SQL Server via Docker.
 
 ## Structure
 ```

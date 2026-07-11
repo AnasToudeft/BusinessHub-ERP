@@ -1,9 +1,10 @@
 # ---------------------------------------------------------
-# BusinessHub ERP - Docker Compose (placeholder)
+# BusinessHub ERP - Docker Compose
 #
-# This is a starting-point orchestration file for the three
-# core services. Dockerfiles are NOT implemented yet; this
-# file documents the intended topology for local development.
+# The `database` service (SQL Server) is ready to use for local development:
+#   docker compose up -d database
+# The frontend/backend Dockerfiles are NOT implemented yet, so their `build`
+# blocks are placeholders for the intended topology.
 # ---------------------------------------------------------
 version: "3.9"
 
@@ -43,10 +44,22 @@ services:
     environment:
       ACCEPT_EULA: "Y"
       MSSQL_SA_PASSWORD: "${DB_PASSWORD}"
+      MSSQL_PID: "Developer"
     ports:
-      - "1433:1433"
+      - "${DB_PORT:-1433}:1433"
     volumes:
       - mssql_data:/var/opt/mssql
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -C -Q 'SELECT 1' || exit 1",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
 
 volumes:
   mssql_data:

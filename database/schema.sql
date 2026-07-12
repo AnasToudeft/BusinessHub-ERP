@@ -1,15 +1,29 @@
 -- =========================================================
--- BusinessHub ERP - Database Schema (placeholder)
+-- BusinessHub ERP - Database Schema (reference catalog)
 -- Engine: Microsoft SQL Server
 --
--- Table definitions will be added here as modules are built.
--- No schema is implemented yet.
+-- The AUTHORITATIVE schema is defined by the versioned migrations in
+-- ./migrations, applied via `npm run db:migrate` (see docs/database.md).
+-- This file is a human-readable catalog of the current tables.
 -- =========================================================
 
--- Example (to be defined later):
--- CREATE TABLE Users (
---     Id            INT IDENTITY(1,1) PRIMARY KEY,
---     Email         NVARCHAR(255) NOT NULL UNIQUE,
---     PasswordHash  NVARCHAR(255) NOT NULL,
---     CreatedAt     DATETIME2     NOT NULL DEFAULT SYSUTCDATETIME()
--- );
+-- --------- Authentication & Authorization (RBAC) ---------
+-- Introduced by migration 0001_create_auth_schema.sql
+--
+-- Users            (Id, Email[UQ], PasswordHash, FirstName, LastName,
+--                   IsActive, CreatedAt, UpdatedAt)
+-- Roles            (Id, Name[UQ], Description, CreatedAt, UpdatedAt)
+-- Permissions      (Id, Code[UQ], Description, CreatedAt)
+-- UserRoles        (UserId -> Users, RoleId -> Roles)          PK (UserId, RoleId)
+-- RolePermissions  (RoleId -> Roles, PermissionId -> Permissions) PK (RoleId, PermissionId)
+--
+-- Relationships:
+--   Users  N:N  Roles        via UserRoles
+--   Roles  N:N  Permissions  via RolePermissions
+-- All join-table foreign keys use ON DELETE CASCADE.
+--
+-- Default roles/permissions are seeded by 0002_seed_auth_rbac.sql.
+
+-- --------- Business modules ---------
+-- Customers, Products, Inventory, Invoices, etc. will be added as
+-- migrations in their respective milestones.

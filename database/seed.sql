@@ -1,11 +1,21 @@
 -- =========================================================
--- BusinessHub ERP - Seed Data (placeholder)
+-- BusinessHub ERP - Seed Data
 -- Engine: Microsoft SQL Server
 --
--- Initial and sample data will be added here once the
--- schema is defined. No seed data is implemented yet.
+-- Required reference data (default Roles, Permissions and their
+-- mappings) is seeded by migration 0002_seed_auth_rbac.sql and is
+-- applied automatically by `npm run db:migrate`.
+--
+-- This file is for optional DEVELOPMENT sample data only.
 -- =========================================================
 
--- Example (to be defined later):
--- INSERT INTO Users (Email, PasswordHash)
--- VALUES ('admin@businesshub.local', '<hashed_password>');
+-- A sample admin user is intentionally NOT inserted here: PasswordHash
+-- must be a real bcrypt hash. Once backend authentication lands
+-- (Milestone 6), create the first admin via the registration flow or a
+-- dedicated seed script that hashes the password, then assign the Admin
+-- role, e.g.:
+--
+--   INSERT INTO dbo.UserRoles (UserId, RoleId)
+--   SELECT u.Id, r.Id
+--   FROM dbo.Users u CROSS JOIN dbo.Roles r
+--   WHERE u.Email = 'admin@businesshub.local' AND r.Name = 'Admin';

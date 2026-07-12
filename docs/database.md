@@ -51,6 +51,42 @@ GET /api/health/db   ->  200 { database: "connected" }  |  503 (not reachable)
 | Money          | `DECIMAL(18, 2)`                                                   |
 | Booleans       | `BIT`                                                             |
 
+## Authentication & Authorization (RBAC)
+
+Introduced by migrations `0001_create_auth_schema.sql` (schema) and
+`0002_seed_auth_rbac.sql` (default data).
+
+```
+ Users  ──< UserRoles >──  Roles  ──< RolePermissions >──  Permissions
+   │                         │                                  │
+ Email(UQ)                Name(UQ)                          Code(UQ)
+ PasswordHash             Description                       Description
+ First/LastName
+ IsActive
+```
+
+| Table             | Purpose                              | Key columns                          |
+| ----------------- | ------------------------------------ | ------------------------------------ |
+| `Users`           | Application accounts                 | `Email` (unique), `PasswordHash`     |
+| `Roles`           | Named roles                          | `Name` (unique)                      |
+| `Permissions`     | Fine-grained rights (`resource:action`) | `Code` (unique)                   |
+| `UserRoles`       | Users ↔ Roles (N:N)                  | PK `(UserId, RoleId)`                |
+| `RolePermissions` | Roles ↔ Permissions (N:N)            | PK `(RoleId, PermissionId)`          |
+
+Join-table foreign keys use `ON DELETE CASCADE`. `PasswordHash` stores a bcrypt
+hash (populated once backend auth lands in Milestone 6).
+
+### Default roles
+
+| Role       | Permissions                                                             |
+| ---------- | ----------------------------------------------------------------------- |
+| `Admin`    | All permissions (incl. `users:*`, `roles:*`)                            |
+| `Manager`  | `view` / `create` / `update` on business data (customers, products, inventory, invoices, reports); no deletes, no user/role admin |
+| `Employee` | `view` on business data                                                 |
+
+Permission codes follow `resource:action` (e.g. `customers:view`,
+`invoices:create`). New modules add their permissions in later migrations.
+
 ## Migrations
 
 SQL migrations live in [`database/migrations/`](../database/migrations/) and are

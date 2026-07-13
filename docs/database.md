@@ -87,6 +87,25 @@ hash (populated once backend auth lands in Milestone 6).
 Permission codes follow `resource:action` (e.g. `customers:view`,
 `invoices:create`). New modules add their permissions in later migrations.
 
+## Customers
+
+Introduced by migration `0003_create_customers.sql`.
+
+| Column        | Type            | Notes                                    |
+| ------------- | --------------- | ---------------------------------------- |
+| `Id`          | `INT IDENTITY`  | PK                                        |
+| `Name`        | `NVARCHAR(200)` | Required                                  |
+| `Email`       | `NVARCHAR(255)` | Optional; **unique when present** (filtered index) |
+| `Phone`       | `NVARCHAR(50)`  | Optional                                 |
+| `Company`     | `NVARCHAR(200)` | Optional                                 |
+| `AddressLine` / `City` / `Country` | `NVARCHAR` | Optional address fields       |
+| `Notes`       | `NVARCHAR(1000)`| Optional                                 |
+| `IsActive`    | `BIT`           | Defaults to `1`                          |
+| `CreatedAt` / `UpdatedAt` | `DATETIME2` | `UpdatedAt` set by the app on update |
+
+Indexes: `UX_Customers_Email` (unique, filtered `WHERE Email IS NOT NULL`),
+`IX_Customers_Name`.
+
 ## Migrations
 
 SQL migrations live in [`database/migrations/`](../database/migrations/) and are

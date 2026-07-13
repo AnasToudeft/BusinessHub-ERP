@@ -92,10 +92,48 @@ already registered), `429` (rate limit), `503` (database unavailable).
 }
 ```
 
+### Customers
+
+All endpoints require authentication and the matching `customers:*` permission.
+
+| Method | Endpoint             | Permission          | Description                    |
+| ------ | -------------------- | ------------------- | ------------------------------ |
+| GET    | `/api/customers`     | `customers:view`    | List (paginated + search)      |
+| GET    | `/api/customers/:id` | `customers:view`    | Get one                        |
+| POST   | `/api/customers`     | `customers:create`  | Create                         |
+| PUT    | `/api/customers/:id` | `customers:update`  | Update                         |
+| DELETE | `/api/customers/:id` | `customers:delete`  | Delete                         |
+
+**List query params:** `page` (default 1), `pageSize` (default 20, max 100),
+`q` (search on name/email/company).
+
+**Customer body**
+```json
+{
+  "name": "Acme Corp",
+  "email": "contact@acme.com",
+  "phone": "+33 1 23 45 67 89",
+  "company": "Acme",
+  "addressLine": "1 Rue de la Paix",
+  "city": "Paris",
+  "country": "France",
+  "notes": "VIP account",
+  "isActive": true
+}
+```
+Only `name` is required. `email`, when provided, must be unique (→ `409`).
+
+**List response (`data`)**
+```json
+{
+  "items": [ { "id": 1, "name": "Acme Corp", "email": "contact@acme.com", "isActive": true, "...": "..." } ],
+  "pagination": { "page": 1, "pageSize": 20, "total": 42, "totalPages": 3 }
+}
+```
+
 ## Planned Endpoints
-- `/api/customers` *(customer management)*
 - `/api/products` *(product catalog)*
-- `/api/invoices` *(invoicing)*
 - `/api/inventory` *(inventory management)*
+- `/api/invoices` *(invoicing)*
 
 Detailed request/response schemas will be documented here and via Swagger.

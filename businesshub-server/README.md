@@ -68,6 +68,7 @@ Error:
 | POST   | `/api/auth/register` | Register (default `Employee` role)   |
 | POST   | `/api/auth/login`    | Login, returns a JWT                 |
 | GET    | `/api/auth/me`       | Current user (requires Bearer token) |
+| *      | `/api/customers`     | Customer CRUD (see [`docs/api.md`](../docs/api.md)) — auth + `customers:*` |
 
 ## Authentication
 JWT-based, layered across `validators/` → `middleware/` → `controllers/` →

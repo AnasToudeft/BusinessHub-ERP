@@ -41,12 +41,27 @@ The UI is a reusable shell — no business modules yet:
   drawer on mobile.
 - **Routing**: `Dashboard` at `/`, placeholder sections for future modules, and
   a catch-all `NotFound` (404).
-- **Reusable components**: `PageContainer` (page header + width), `Loading`
-  (spinner), `ErrorMessage` (error panel with optional retry).
+- **Reusable components**: `PageContainer`, `Loading`, `ErrorMessage`,
+  `Button`, `FormField`, `AuthCard`.
 - **Theming**: light/dark themes built on CSS variables in
   `styles/global.css`. `ThemeContext` persists the choice to `localStorage` and
   honors the OS preference; an inline script in `index.html` prevents a flash of
   the wrong theme on load.
+
+## Authentication
+JWT-based session on top of the backend auth API:
+
+- **`AuthContext`** holds the session (`user`, `roles`, `permissions`, `status`)
+  and exposes `login` / `register` / `logout`. On load it restores the session
+  from the stored token via `GET /api/auth/me`.
+- **`services/api.js`** attaches the `Bearer` token to every request and, on a
+  `401`, clears the token and ends the session.
+- **Route guards**: `ProtectedRoute` gates the app (redirects to `/login`);
+  `PublicOnlyRoute` keeps signed-in users out of `/login` and `/register`.
+- **Pages**: `Login` and `Register`; the `Topbar` shows the current user and a
+  sign-out button.
+
+The token is stored in `localStorage` (`businesshub-token`).
 
 ## Tech
 - React + React Router

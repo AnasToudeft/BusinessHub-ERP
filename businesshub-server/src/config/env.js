@@ -43,6 +43,23 @@ function parseInteger(value, fallback, label) {
   return n;
 }
 
+function resolveJwtSecret(nodeEnv) {
+  const secret = process.env.JWT_SECRET;
+  if (secret && secret.length >= 16) return secret;
+
+  if (nodeEnv === "production") {
+    throw new Error(
+      "JWT_SECRET must be set to a strong value (>= 16 characters) in production."
+    );
+  }
+
+  console.warn(
+    "[config] JWT_SECRET is missing or weak; using an insecure development " +
+      "secret. Set JWT_SECRET in your .env before deploying."
+  );
+  return "dev-insecure-secret-change-me";
+}
+
 const nodeEnv = parseNodeEnv(process.env.NODE_ENV);
 
 const config = Object.freeze({
@@ -72,6 +89,13 @@ const config = Object.freeze({
       15000,
       "DB_CONNECTION_TIMEOUT_MS"
     ),
+  }),
+
+  // Authentication settings.
+  auth: Object.freeze({
+    jwtSecret: resolveJwtSecret(nodeEnv),
+    jwtExpiresIn: process.env.JWT_EXPIRES_IN || "1d",
+    bcryptSaltRounds: parseInteger(process.env.BCRYPT_SALT_ROUNDS, 10, "BCRYPT_SALT_ROUNDS"),
   }),
 });
 

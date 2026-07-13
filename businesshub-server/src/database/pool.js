@@ -8,6 +8,7 @@
 import sql from "mssql";
 
 import config from "../config/env.js";
+import ApiError from "../utils/ApiError.js";
 
 let pool = null;
 
@@ -48,7 +49,9 @@ export async function connectDatabase() {
 // handlers/repositories that already assume a live connection.
 export function getPool() {
   if (!pool || !pool.connected) {
-    throw new Error("Database not connected. Call connectDatabase() first.");
+    throw ApiError.serviceUnavailable(
+      "Database is not available. Ensure SQL Server is running and configured."
+    );
   }
   return pool;
 }

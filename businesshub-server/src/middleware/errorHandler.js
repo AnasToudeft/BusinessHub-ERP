@@ -20,12 +20,20 @@ export default function errorHandler(err, req, res, next) {
   let details = isApiError ? err.details : null;
 
   if (statusCode >= 500) {
-    console.error(
-      `[${new Date().toISOString()}] Unhandled error on ${req.method} ${req.originalUrl}:`,
-      err.stack || err
-    );
-    if (config.isDevelopment) {
-      details = { stack: err.stack };
+    if (isApiError) {
+      // Expected operational failure (e.g. DB unavailable) — log concisely.
+      console.error(
+        `[${new Date().toISOString()}] ${req.method} ${req.originalUrl} -> ${statusCode}: ${err.message}`
+      );
+    } else {
+      // Genuinely unexpected — log the stack, and expose it in development.
+      console.error(
+        `[${new Date().toISOString()}] Unhandled error on ${req.method} ${req.originalUrl}:`,
+        err.stack || err
+      );
+      if (config.isDevelopment) {
+        details = { stack: err.stack };
+      }
     }
   }
 

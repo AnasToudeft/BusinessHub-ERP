@@ -60,11 +60,27 @@ Error:
 ```
 
 ## Endpoints
-| Method | Endpoint         | Description                          |
-| ------ | ---------------- | ------------------------------------ |
-| GET    | `/`              | API root info                        |
-| GET    | `/api/health`    | Liveness check                       |
-| GET    | `/api/health/db` | Database readiness (200 / 503)       |
+| Method | Endpoint             | Description                          |
+| ------ | -------------------- | ------------------------------------ |
+| GET    | `/`                  | API root info                        |
+| GET    | `/api/health`        | Liveness check                       |
+| GET    | `/api/health/db`     | Database readiness (200 / 503)       |
+| POST   | `/api/auth/register` | Register (default `Employee` role)   |
+| POST   | `/api/auth/login`    | Login, returns a JWT                 |
+| GET    | `/api/auth/me`       | Current user (requires Bearer token) |
+
+## Authentication
+JWT-based, layered across `validators/` → `middleware/` → `controllers/` →
+`services/` → `repositories/`:
+- Passwords hashed with `bcryptjs` (`utils/password.js`).
+- Tokens signed/verified in `utils/jwt.js`; `middleware/authenticate.js` reads the
+  `Bearer` token into `req.user`.
+- `middleware/authorize.js` provides `requirePermissions` / `requireRoles` for
+  protecting future module routes.
+- Auth endpoints are rate-limited (`middleware/rateLimiter.js`).
+
+Requires the RBAC tables (Milestone 5) — run `npm run db:migrate` first. See
+[`docs/api.md`](../docs/api.md) for request/response details.
 
 ## Database
 SQL Server connectivity lives in `src/database/`:

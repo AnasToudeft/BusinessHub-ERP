@@ -131,8 +131,38 @@ Only `name` is required. `email`, when provided, must be unique (→ `409`).
 }
 ```
 
+### Products
+
+All endpoints require authentication and the matching `products:*` permission.
+
+| Method | Endpoint            | Permission         | Description                |
+| ------ | ------------------- | ------------------ | -------------------------- |
+| GET    | `/api/products`     | `products:view`    | List (paginated + search)  |
+| GET    | `/api/products/:id` | `products:view`    | Get one                    |
+| POST   | `/api/products`     | `products:create`  | Create                     |
+| PUT    | `/api/products/:id` | `products:update`  | Update                     |
+| DELETE | `/api/products/:id` | `products:delete`  | Delete                     |
+
+**List query params:** `page` (default 1), `pageSize` (default 20, max 100),
+`q` (search on sku/name/category).
+
+**Product body**
+```json
+{
+  "sku": "SKU-1001",
+  "name": "Wireless Mouse",
+  "description": "Ergonomic 2.4GHz mouse",
+  "category": "Peripherals",
+  "unit": "pcs",
+  "price": 24.99,
+  "cost": 12.5,
+  "isActive": true
+}
+```
+`sku`, `name` and `price` are required. `sku` must be unique (→ `409`); `price`
+and `cost` must be numbers ≥ 0.
+
 ## Planned Endpoints
-- `/api/products` *(product catalog)*
 - `/api/inventory` *(inventory management)*
 - `/api/invoices` *(invoicing)*
 

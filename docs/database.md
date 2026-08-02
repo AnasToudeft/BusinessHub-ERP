@@ -106,6 +106,25 @@ Introduced by migration `0003_create_customers.sql`.
 Indexes: `UX_Customers_Email` (unique, filtered `WHERE Email IS NOT NULL`),
 `IX_Customers_Name`.
 
+## Products
+
+Introduced by migration `0004_create_products.sql`.
+
+| Column        | Type            | Notes                                    |
+| ------------- | --------------- | ---------------------------------------- |
+| `Id`          | `INT IDENTITY`  | PK                                        |
+| `Sku`         | `NVARCHAR(50)`  | Required; **unique** (`UQ_Products_Sku`)  |
+| `Name`        | `NVARCHAR(200)` | Required                                  |
+| `Description` | `NVARCHAR(1000)`| Optional                                 |
+| `Category`    | `NVARCHAR(100)` | Optional                                 |
+| `Unit`        | `NVARCHAR(20)`  | Optional (e.g. `pcs`, `kg`)              |
+| `Price`       | `DECIMAL(18,2)` | Required; defaults to `0`                |
+| `Cost`        | `DECIMAL(18,2)` | Optional                                 |
+| `IsActive`    | `BIT`           | Defaults to `1`                          |
+| `CreatedAt` / `UpdatedAt` | `DATETIME2` | `UpdatedAt` set by the app on update |
+
+Indexes: `UQ_Products_Sku` (unique), `IX_Products_Name`.
+
 ## Migrations
 
 SQL migrations live in [`database/migrations/`](../database/migrations/) and are

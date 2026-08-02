@@ -69,6 +69,7 @@ Error:
 | POST   | `/api/auth/login`    | Login, returns a JWT                 |
 | GET    | `/api/auth/me`       | Current user (requires Bearer token) |
 | *      | `/api/customers`     | Customer CRUD (see [`docs/api.md`](../docs/api.md)) — auth + `customers:*` |
+| *      | `/api/products`      | Product CRUD (see [`docs/api.md`](../docs/api.md)) — auth + `products:*` |
 
 ## Authentication
 JWT-based, layered across `validators/` → `middleware/` → `controllers/` →

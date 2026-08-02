@@ -52,4 +52,9 @@ export function getErrorMessage(
   return error?.response?.data?.message || error?.message || fallback;
 }
 
+// Returns the per-field validation details from a 400 response, or null.
+export function getErrorDetails(error) {
+  return error?.response?.data?.error?.details || null;
+}
+
 export default api;

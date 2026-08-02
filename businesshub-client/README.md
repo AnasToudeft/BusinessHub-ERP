@@ -42,7 +42,7 @@ The UI is a reusable shell — no business modules yet:
 - **Routing**: `Dashboard` at `/`, placeholder sections for future modules, and
   a catch-all `NotFound` (404).
 - **Reusable components**: `PageContainer`, `Loading`, `ErrorMessage`,
-  `Button`, `FormField`, `AuthCard`.
+  `Button`, `FormField`, `AuthCard`, `Pagination`, `ConfirmDialog`.
 - **Theming**: light/dark themes built on CSS variables in
   `styles/global.css`. `ThemeContext` persists the choice to `localStorage` and
   honors the OS preference; an inline script in `index.html` prevents a flash of
@@ -62,6 +62,15 @@ JWT-based session on top of the backend auth API:
   sign-out button.
 
 The token is stored in `localStorage` (`businesshub-token`).
+`AuthContext` also exposes `hasPermission(code)` for permission-aware UI.
+
+## Customers module
+First business module, wired to the backend Customers API:
+- `CustomersList` — paginated table with search, plus create/edit/delete
+  actions shown only when the user holds the matching `customers:*` permission.
+- `CustomerForm` — create/edit form; backend 400 validation `details` are mapped
+  back onto the corresponding fields.
+- Routes: `/customers`, `/customers/new`, `/customers/:id/edit`.
 
 ## Tech
 - React + React Router

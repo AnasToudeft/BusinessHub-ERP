@@ -39,3 +39,12 @@
 .secondary:not(:disabled):hover {
   border-color: var(--color-primary);
 }
+
+.danger {
+  background: var(--color-danger);
+  color: #ffffff;
+}
+
+.danger:not(:disabled):hover {
+  opacity: 0.9;
+}

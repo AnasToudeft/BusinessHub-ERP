@@ -31,6 +31,12 @@
   outline: none;
 }
 
+.textarea {
+  resize: vertical;
+  min-height: 4.5rem;
+  font-family: inherit;
+}
+
 .inputError {
   border-color: var(--color-danger);
 }

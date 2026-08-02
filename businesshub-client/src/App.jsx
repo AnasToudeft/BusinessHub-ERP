@@ -10,6 +10,8 @@ import MainLayout from "./layouts/MainLayout.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
+import CustomersList from "./pages/Customers/CustomersList.jsx";
+import CustomerForm from "./pages/Customers/CustomerForm.jsx";
 import Placeholder from "./pages/Placeholder.jsx";
 import NotFound from "./pages/NotFound.jsx";
 
@@ -24,7 +26,9 @@ function App() {
       <Route element={<ProtectedRoute />}>
         <Route element={<MainLayout />}>
           <Route index element={<Dashboard />} />
-          <Route path="/customers" element={<Placeholder title="Customers" />} />
+          <Route path="/customers" element={<CustomersList />} />
+          <Route path="/customers/new" element={<CustomerForm />} />
+          <Route path="/customers/:id/edit" element={<CustomerForm />} />
           <Route path="/products" element={<Placeholder title="Products" />} />
           <Route path="/inventory" element={<Placeholder title="Inventory" />} />
           <Route path="/invoices" element={<Placeholder title="Invoices" />} />

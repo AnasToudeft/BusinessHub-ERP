@@ -83,12 +83,18 @@ export function AuthProvider({ children }) {
     [applySession]
   );
 
+  const hasPermission = useCallback(
+    (code) => permissions.includes(code),
+    [permissions]
+  );
+
   const value = {
     user,
     roles,
     permissions,
     status,
     isAuthenticated: status === "authenticated",
+    hasPermission,
     login,
     register,
     logout: clearSession,

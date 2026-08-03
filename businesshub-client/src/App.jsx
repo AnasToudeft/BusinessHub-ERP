@@ -12,6 +12,8 @@ import Register from "./pages/Register.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import CustomersList from "./pages/Customers/CustomersList.jsx";
 import CustomerForm from "./pages/Customers/CustomerForm.jsx";
+import ProductsList from "./pages/Products/ProductsList.jsx";
+import ProductForm from "./pages/Products/ProductForm.jsx";
 import Placeholder from "./pages/Placeholder.jsx";
 import NotFound from "./pages/NotFound.jsx";
 
@@ -29,7 +31,9 @@ function App() {
           <Route path="/customers" element={<CustomersList />} />
           <Route path="/customers/new" element={<CustomerForm />} />
           <Route path="/customers/:id/edit" element={<CustomerForm />} />
-          <Route path="/products" element={<Placeholder title="Products" />} />
+          <Route path="/products" element={<ProductsList />} />
+          <Route path="/products/new" element={<ProductForm />} />
+          <Route path="/products/:id/edit" element={<ProductForm />} />
           <Route path="/inventory" element={<Placeholder title="Inventory" />} />
           <Route path="/invoices" element={<Placeholder title="Invoices" />} />
           <Route path="*" element={<NotFound />} />

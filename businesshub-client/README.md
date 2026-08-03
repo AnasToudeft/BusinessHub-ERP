@@ -64,13 +64,18 @@ JWT-based session on top of the backend auth API:
 The token is stored in `localStorage` (`businesshub-token`).
 `AuthContext` also exposes `hasPermission(code)` for permission-aware UI.
 
-## Customers module
-First business module, wired to the backend Customers API:
-- `CustomersList` — paginated table with search, plus create/edit/delete
-  actions shown only when the user holds the matching `customers:*` permission.
-- `CustomerForm` — create/edit form; backend 400 validation `details` are mapped
-  back onto the corresponding fields.
-- Routes: `/customers`, `/customers/new`, `/customers/:id/edit`.
+## Business modules
+Wired to the backend, following one pattern (list + form, permission-aware):
+
+- **Customers** — `CustomersList` (paginated table + search) and `CustomerForm`.
+  Routes: `/customers`, `/customers/new`, `/customers/:id/edit`.
+- **Products** — `ProductsList` (paginated table + search, price column) and
+  `ProductForm` (numeric price/cost with client + backend validation).
+  Routes: `/products`, `/products/new`, `/products/:id/edit`.
+
+Create/edit/delete controls appear only when the user holds the matching
+`<module>:*` permission; backend 400 validation `details` are mapped onto the
+corresponding form fields.
 
 ## Tech
 - React + React Router
